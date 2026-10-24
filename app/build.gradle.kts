@@ -5,7 +5,9 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
-// Maps API key lives in local.properties (gitignored): MAPS_API_KEY=...
+// Secrets live in local.properties (gitignored; CI writes it from GitHub secrets):
+//   MAPS_API_KEY=...
+//   RELEASE_STORE_FILE / RELEASE_STORE_PASSWORD / RELEASE_KEY_ALIAS / RELEASE_KEY_PASSWORD (optional)
 val localProperties = Properties().apply {
     val file = rootProject.file("local.properties")
     if (file.exists()) file.inputStream().use { load(it) }
@@ -21,16 +23,30 @@ android {
         applicationId = "com.watsup.azimute_find"
         minSdk = 35
         targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
+        // CI passes these from the release tag: -PversionName=1.2.0 -PversionCode=<run number>
+        versionCode = providers.gradleProperty("versionCode").orNull?.toInt() ?: 1
+        versionName = providers.gradleProperty("versionName").orNull ?: "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders["MAPS_API_KEY"] = localProperties.getProperty("MAPS_API_KEY", "")
     }
 
+    signingConfigs {
+        localProperties.getProperty("RELEASE_STORE_FILE")?.let { storePath ->
+            create("release") {
+                storeFile = file(storePath)
+                storePassword = localProperties.getProperty("RELEASE_STORE_PASSWORD")
+                keyAlias = localProperties.getProperty("RELEASE_KEY_ALIAS")
+                keyPassword = localProperties.getProperty("RELEASE_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
+            // Unsigned when no keystore is configured (e.g. a fresh clone).
+            signingConfig = signingConfigs.findByName("release")
             optimization {
                 enable = false
             }

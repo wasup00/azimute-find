@@ -19,3 +19,14 @@ Requirements: Android Studio (AGP 9), JDK 17+, a device or emulator with Google 
 3. Run the `app` configuration, or `./gradlew installDebug`.
 
 Unit tests: `./gradlew testDebugUnitTest`.
+
+## Releases
+
+Pushing a tag like `v1.2.0` runs [.github/workflows/release.yml](.github/workflows/release.yml): it runs the unit tests, builds a signed release APK (version name from the tag, version code from the run number) and publishes a GitHub release with `azimute-find-1.2.0.apk` attached.
+
+```
+git tag v1.2.0
+git push origin v1.2.0
+```
+
+Repository secrets used: `MAPS_API_KEY`, `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`.
