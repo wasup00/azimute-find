@@ -44,7 +44,7 @@ jobs:
           VERSION="${GITHUB_REF_NAME#v}"
           ./gradlew testDebugUnitTest assembleRelease \
             -PversionName="$VERSION" -PversionCode="${{ github.run_number }}"
-          cp app/build/outputs/apk/release/app-release.apk "azimute-find-$VERSION.apk"
+          cp app/build/outputs/apk/release/app-release.apk "azimute-finder-$VERSION.apk"
 
       - name: Publish GitHub release
         env:
@@ -53,7 +53,7 @@ jobs:
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           sed "s/VERSION/$VERSION/g" .github/release-install.md > "$RUNNER_TEMP/notes.md"
-          gh release create "$GITHUB_REF_NAME" "azimute-find-$VERSION.apk" \
-            --title "Azimute find $VERSION" \
+          gh release create "$GITHUB_REF_NAME" "azimute-finder-$VERSION.apk" \
+            --title "Azimute finder $VERSION" \
             --notes-file "$RUNNER_TEMP/notes.md" \
             --generate-notes

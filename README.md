@@ -1,4 +1,4 @@
-# Azimute find
+# Azimute finder
 
 Android app (Kotlin + Jetpack Compose + Material 3) that shows a satellite map with a true-north compass and up to four azimuth lines.
 
@@ -22,7 +22,7 @@ Unit tests: `./gradlew testDebugUnitTest`.
 
 ## Releases
 
-Pushing a tag like `v1.2.0` runs [.github/workflows/release.yml](.github/workflows/release.yml): it runs the unit tests, builds a signed release APK (version name from the tag, version code from the run number) and publishes a GitHub release with `azimute-find-1.2.0.apk` attached.
+Pushing a tag like `v1.2.0` runs [.github/workflows/release.yml](.github/workflows/release.yml): it runs the unit tests, builds a signed release APK (version name from the tag, version code from the run number) and publishes a GitHub release with `azimute-finder-1.2.0.apk` attached.
 
 ```
 git tag v1.2.0

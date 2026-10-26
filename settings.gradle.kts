@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Azimute find"
+rootProject.name = "Azimute finder"
 include(":app")
