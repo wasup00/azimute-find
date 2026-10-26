@@ -17,3 +17,7 @@ local.properties
 
 # Personal planning notes (Claude workflow), kept local
 /tasks
+
+# Per-machine Android Studio state
+/.idea/deploymentTargetSelector.xml
+/.idea/deviceManager.xml
