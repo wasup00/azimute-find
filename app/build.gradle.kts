@@ -59,6 +59,12 @@ android {
     buildFeatures {
         compose = true
     }
+    androidResources {
+        // Lists the app's languages (from values-*/) so Android offers a per-app language setting.
+        generateLocaleConfig = true
+        // Drop library translations for languages the app itself doesn't support.
+        localeFilters += listOf("en", "pl")
+    }
 }
 
 dependencies {

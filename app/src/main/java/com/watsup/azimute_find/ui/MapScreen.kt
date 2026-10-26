@@ -13,8 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
@@ -40,6 +41,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.watsup.azimute_find.MainViewModel
+import com.watsup.azimute_find.R
 import com.watsup.azimute_find.geo.destinationPoint
 import com.watsup.azimute_find.ui.theme.azimuthColor
 import kotlinx.coroutines.launch
@@ -98,6 +100,8 @@ fun MapScreen(vm: MainViewModel = viewModel()) {
         }
     }
 
+    val lockedPointTitle = stringResource(R.string.locked_point)
+
     Box(Modifier.fillMaxSize()) {
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
@@ -108,7 +112,7 @@ fun MapScreen(vm: MainViewModel = viewModel()) {
             uiSettings = MAP_UI_SETTINGS,
         ) {
             state.lockedPoint?.let { locked ->
-                Marker(state = remember(locked) { MarkerState(locked) }, title = "Locked point")
+                Marker(state = remember(locked) { MarkerState(locked) }, title = lockedPointTitle)
             }
             // Reading the camera here recomposes only the map content, not the whole screen.
             val origin = state.lineOrigin(mapCenter = cameraPositionState.position.target)
@@ -136,10 +140,10 @@ fun MapScreen(vm: MainViewModel = viewModel()) {
         ) {
             if (lowAccuracy) CalibrationBanner(Modifier.fillMaxWidth())
             if (!vm.compassAvailable) {
-                InfoBanner("This device has no rotation-vector sensor, so the compass is unavailable.")
+                InfoBanner(stringResource(R.string.no_compass_sensor))
             }
             if (!state.hasLocationPermission) {
-                InfoBanner("Location permission is off. Grant it in system settings to show your position and lock at it.")
+                InfoBanner(stringResource(R.string.location_permission_off))
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 HeadingReadout(heading)

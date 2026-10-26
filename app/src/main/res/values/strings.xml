@@ -1,3 +1,36 @@
 <resources>
-    <string name="app_name">Azimute finder</string>
+    <string name="app_name" translatable="false">Azimute finder</string>
+
+    <!-- Compass -->
+    <string name="heading_true">%1$d° true</string>
+    <string name="calibration_warning">Compass accuracy is low. Move the phone in a figure-8 to calibrate, away from metal.</string>
+    <string name="no_compass_sensor">This device has no rotation-vector sensor, so the compass is unavailable.</string>
+    <string name="location_permission_off">Location permission is off. Grant it in system settings to show your position and lock at it.</string>
+
+    <!-- Map controls -->
+    <string name="map_layers">Map layers</string>
+    <string name="map_type_hybrid">Hybrid</string>
+    <string name="map_type_satellite">Satellite</string>
+    <string name="map_type_terrain">Terrain</string>
+    <string name="map_type_normal">Map</string>
+    <string name="north_up">Reset map to north up</string>
+    <string name="center_on_my_location">Center on my location</string>
+    <string name="go_to_locked_point">Go to locked point</string>
+    <string name="lock_position">Lock position</string>
+    <string name="unlock_position">Unlock position</string>
+    <string name="lock_at_my_position">Lock at my position</string>
+    <string name="lock_at_map_center">Lock at map center</string>
+    <string name="locked_point">Locked point</string>
+
+    <!-- Azimuth list -->
+    <string name="azimuth_list">Azimuth list</string>
+    <string name="azimuths_title">Azimuths (%1$d/%2$d)</string>
+    <string name="degrees_input_label">Degrees (0–359.9)</string>
+    <plurals name="azimuths_max">
+        <item quantity="one">Maximum %d azimuth</item>
+        <item quantity="other">Maximum %d azimuths</item>
+    </plurals>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="no_azimuths">No azimuths yet. Type a bearing in degrees and tap Add.</string>
 </resources>

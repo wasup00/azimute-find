@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.watsup.azimute_find.Azimuth
+import com.watsup.azimute_find.R
 import com.watsup.azimute_find.ui.theme.azimuthColor
 import kotlin.math.cos
 import kotlin.math.roundToInt
@@ -145,7 +147,7 @@ fun HeadingReadout(heading: () -> Float?, modifier: Modifier = Modifier) {
         tonalElevation = 3.dp,
     ) {
         Text(
-            text = degrees?.let { "$it° true" } ?: "—",
+            text = degrees?.let { stringResource(R.string.heading_true, it) } ?: "—",
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
         )

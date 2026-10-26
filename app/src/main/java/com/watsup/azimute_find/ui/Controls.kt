@@ -16,9 +16,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Layers
-import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.MyLocation
@@ -50,17 +50,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.google.maps.android.compose.MapType
 import com.watsup.azimute_find.Azimuth
 import com.watsup.azimute_find.MAX_AZIMUTHS
+import com.watsup.azimute_find.R
 import com.watsup.azimute_find.geo.shortestAngleDelta
 import com.watsup.azimute_find.ui.theme.azimuthColor
 import java.util.Locale
 import kotlin.math.abs
 
-private fun formatDeg(deg: Float) = String.format(Locale.US, "%.1f°", deg)
+// Current locale, so Polish shows "12,5°".
+private fun formatDeg(deg: Float) = String.format(Locale.getDefault(), "%.1f°", deg)
 
 @Composable
 fun MapControls(
@@ -89,7 +93,7 @@ fun MapControls(
             modifier = Modifier.align(Alignment.BottomStart),
         ) {
             SmallFloatingActionButton(onClick = { showSheet = true }) {
-                Icon(Icons.AutoMirrored.Filled.List, contentDescription = "Azimuth list")
+                Icon(Icons.AutoMirrored.Filled.List, contentDescription = stringResource(R.string.azimuth_list))
             }
         }
 
@@ -103,7 +107,7 @@ fun MapControls(
                     // Arrow points at map north, like Google Maps' compass button.
                     Icon(
                         Icons.Filled.Navigation,
-                        contentDescription = "Reset map to north up",
+                        contentDescription = stringResource(R.string.north_up),
                         modifier = Modifier.graphicsLayer { rotationZ = -mapBearing() },
                     )
                 }
@@ -113,7 +117,7 @@ fun MapControls(
                 SmallFloatingActionButton(onClick = onRecenter) {
                     Icon(
                         Icons.Filled.MyLocation,
-                        contentDescription = if (isLocked) "Go to locked point" else "Center on my location",
+                        contentDescription = stringResource(if (isLocked) R.string.go_to_locked_point else R.string.center_on_my_location),
                     )
                 }
             }
@@ -126,18 +130,18 @@ fun MapControls(
                 ) {
                     Icon(
                         if (isLocked) Icons.Filled.Lock else Icons.Filled.LockOpen,
-                        contentDescription = if (isLocked) "Unlock position" else "Lock position",
+                        contentDescription = stringResource(if (isLocked) R.string.unlock_position else R.string.lock_position),
                     )
                 }
                 DropdownMenu(expanded = lockMenuOpen, onDismissRequest = { lockMenuOpen = false }) {
                     DropdownMenuItem(
-                        text = { Text("Lock at my position") },
+                        text = { Text(stringResource(R.string.lock_at_my_position)) },
                         leadingIcon = { Icon(Icons.Filled.MyLocation, null) },
                         enabled = canLockAtMyPosition,
                         onClick = { lockMenuOpen = false; onLockHere() },
                     )
                     DropdownMenuItem(
-                        text = { Text("Lock at map center") },
+                        text = { Text(stringResource(R.string.lock_at_map_center)) },
                         leadingIcon = { Icon(Icons.Filled.Lock, null) },
                         onClick = { lockMenuOpen = false; onLockAtCenter() },
                     )
@@ -170,13 +174,18 @@ private fun AzimuthSheet(
 
     ModalBottomSheet(onDismissRequest = onDismiss) {
         Column(Modifier.padding(horizontal = 16.dp).navigationBarsPadding()) {
-            Text("Azimuths (${azimuths.size}/$MAX_AZIMUTHS)", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.azimuths_title, azimuths.size, MAX_AZIMUTHS), style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.size(12.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 OutlinedTextField(
                     value = input,
                     onValueChange = { input = it },
-                    label = { Text(if (full) "Maximum $MAX_AZIMUTHS azimuths" else "Degrees (0–359.9)") },
+                    label = {
+                        Text(
+                            if (full) pluralStringResource(R.plurals.azimuths_max, MAX_AZIMUTHS, MAX_AZIMUTHS)
+                            else stringResource(R.string.degrees_input_label),
+                        )
+                    },
                     enabled = !full,
                     isError = input.isNotEmpty() && parsed == null,
                     singleLine = true,
@@ -185,13 +194,13 @@ private fun AzimuthSheet(
                 )
                 Spacer(Modifier.width(12.dp))
                 Button(enabled = parsed != null && !full, onClick = { parsed?.let(onAdd); input = "" }) {
-                    Text("Add")
+                    Text(stringResource(R.string.add))
                 }
             }
             Spacer(Modifier.size(8.dp))
             if (azimuths.isEmpty()) {
                 Text(
-                    "No azimuths yet. Type a bearing in degrees and tap Add.",
+                    stringResource(R.string.no_azimuths),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(vertical = 16.dp),
                 )
@@ -205,7 +214,7 @@ private fun AzimuthSheet(
                         headlineContent = { Text(formatDeg(az.degrees)) },
                         trailingContent = {
                             IconButton(onClick = { onRemove(az.id) }) {
-                                Icon(Icons.Filled.Delete, contentDescription = "Remove")
+                                Icon(Icons.Filled.Delete, contentDescription = stringResource(R.string.remove))
                             }
                         },
                     )
@@ -220,19 +229,19 @@ private fun AzimuthSheet(
 fun LayerSwitcher(selected: MapType, onSelect: (MapType) -> Unit, modifier: Modifier = Modifier) {
     var open by remember { mutableStateOf(false) }
     val options = listOf(
-        MapType.HYBRID to "Hybrid",
-        MapType.SATELLITE to "Satellite",
-        MapType.TERRAIN to "Terrain",
-        MapType.NORMAL to "Map",
+        MapType.HYBRID to R.string.map_type_hybrid,
+        MapType.SATELLITE to R.string.map_type_satellite,
+        MapType.TERRAIN to R.string.map_type_terrain,
+        MapType.NORMAL to R.string.map_type_normal,
     )
     Box(modifier) {
         FilledTonalIconButton(onClick = { open = true }) {
-            Icon(Icons.Filled.Layers, contentDescription = "Map layers")
+            Icon(Icons.Filled.Layers, contentDescription = stringResource(R.string.map_layers))
         }
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
-            options.forEach { (type, label) ->
+            options.forEach { (type, labelRes) ->
                 DropdownMenuItem(
-                    text = { Text(label) },
+                    text = { Text(stringResource(labelRes)) },
                     leadingIcon = { RadioButton(selected = type == selected, onClick = null) },
                     onClick = { open = false; onSelect(type) },
                 )
@@ -253,7 +262,7 @@ fun CalibrationBanner(modifier: Modifier = Modifier) {
             Icon(Icons.Filled.Warning, null)
             Spacer(Modifier.width(12.dp))
             Text(
-                "Compass accuracy is low. Move the phone in a figure-8 to calibrate, away from metal.",
+                stringResource(R.string.calibration_warning),
                 style = MaterialTheme.typography.bodyMedium,
             )
         }

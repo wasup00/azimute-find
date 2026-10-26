@@ -1,0 +1,36 @@
+<resources>
+    <!-- Compass -->
+    <string name="heading_true">%1$d° geogr.</string>
+    <string name="calibration_warning">Niska dokładność kompasu. Aby go skalibrować, poruszaj telefonem ruchem ósemki, z dala od metalu.</string>
+    <string name="no_compass_sensor">To urządzenie nie ma czujnika orientacji, więc kompas jest niedostępny.</string>
+    <string name="location_permission_off">Dostęp do lokalizacji jest wyłączony. Włącz go w ustawieniach systemu, aby widzieć swoją pozycję i blokować w niej punkt.</string>
+
+    <!-- Map controls -->
+    <string name="map_layers">Warstwy mapy</string>
+    <string name="map_type_hybrid">Hybrydowa</string>
+    <string name="map_type_satellite">Satelita</string>
+    <string name="map_type_terrain">Teren</string>
+    <string name="map_type_normal">Mapa</string>
+    <string name="north_up">Ustaw mapę północą do góry</string>
+    <string name="center_on_my_location">Wyśrodkuj na mojej pozycji</string>
+    <string name="go_to_locked_point">Przejdź do zablokowanego punktu</string>
+    <string name="lock_position">Zablokuj punkt</string>
+    <string name="unlock_position">Odblokuj punkt</string>
+    <string name="lock_at_my_position">Zablokuj w mojej pozycji</string>
+    <string name="lock_at_map_center">Zablokuj w środku mapy</string>
+    <string name="locked_point">Zablokowany punkt</string>
+
+    <!-- Azimuth list -->
+    <string name="azimuth_list">Lista azymutów</string>
+    <string name="azimuths_title">Azymuty (%1$d/%2$d)</string>
+    <string name="degrees_input_label">Stopnie (0–359,9)</string>
+    <plurals name="azimuths_max">
+        <item quantity="one">Maksymalnie %d azymut</item>
+        <item quantity="few">Maksymalnie %d azymuty</item>
+        <item quantity="many">Maksymalnie %d azymutów</item>
+        <item quantity="other">Maksymalnie %d azymutu</item>
+    </plurals>
+    <string name="add">Dodaj</string>
+    <string name="remove">Usuń</string>
+    <string name="no_azimuths">Brak azymutów. Wpisz kierunek w stopniach i naciśnij Dodaj.</string>
+</resources>
